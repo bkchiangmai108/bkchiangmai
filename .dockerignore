@@ -1,0 +1,7 @@
+node_modules
+.git
+.agents
+scratch
+*.log
+data/reservations.json
+data/line_notifications.log

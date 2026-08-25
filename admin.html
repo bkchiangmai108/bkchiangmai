@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="th">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Admin - BK Chiang Mai</title>
+<script src="https://cdn.tailwindcss.com"></script></head>
+<body class="bg-gray-100 p-6">
+<div class="max-w-6xl mx-auto">
+  <div class="flex justify-between items-center mb-6">
+    <h1 class="text-2xl font-bold">🔐 BK Chiang Mai Admin</h1>
+    <div><input id="pwdInput" type="password" placeholder="รหัสผ่าน" class="border p-2 rounded">
+    <button onclick="login()" class="bg-blue-600 text-white px-4 py-2 rounded ml-2">เข้าสู่ระบบ</button>
+    <a href="/" class="ml-4 text-blue-600">← กลับหน้าเว็บ</a></div>
+  </div>
+  <div id="stats" class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6"></div>
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div class="bg-white rounded-lg shadow p-4"><h2 class="font-bold mb-3">📋 จองคอร์ส</h2><div id="reservations" class="text-sm"></div></div>
+    <div class="bg-white rounded-lg shadow p-4"><h2 class="font-bold mb-3">📧 ติดต่อ</h2><div id="contacts" class="text-sm"></div></div>
+    <div class="bg-white rounded-lg shadow p-4"><h2 class="font-bold mb-3">📬 Subscribers</h2><div id="subscribers" class="text-sm"></div></div>
+  </div>
+</div>
+<script>
+let key='';
+function login(){key=document.getElementById('pwdInput').value;loadData();}
+async function loadData(){
+  try{
+    const h={'x-admin-key':key};
+    const [stats,reservations,contacts,subs]=await Promise.all([
+      fetch('/api/admin/stats',{headers:h}).then(r=>r.json()),
+      fetch('/api/admin/reservations',{headers:h}).then(r=>r.json()),
+      fetch('/api/admin/contacts',{headers:h}).then(r=>r.json()),
+      fetch('/api/admin/subscribers',{headers:h}).then(r=>r.json())]);
+    document.getElementById('stats').innerHTML=Object.entries(stats).map(([k,v])=>'<div class="bg-white rounded-lg shadow p-4 text-center"><div class="text-3xl font-bold">'+v+'</div><div class="text-gray-500">'+k+'</div></div>').join('');
+    document.getElementById('reservations').innerHTML=Array.isArray(reservations)?reservations.slice(0,30).map(r=>'<div class="border-b pb-2 mb-2"><b>'+(r.full_name||'')+'</b><br>📞 '+(r.contact_phone||'')+'<br>📍 '+(r.preferred_location||'')+'<br><small>'+(r.timestamp||'')+'</small></div>').join(''):'';
+    document.getElementById('contacts').innerHTML=Array.isArray(contacts)?contacts.slice(0,20).map(c=>'<div class="border-b pb-2 mb-2"><b>'+(c.name||'')+'</b><br>📧 '+(c.email||'')+'<br>'+((c.message||'').substring(0,60))+'<br><small>'+(c.created_at||c.timestamp||'')+'</small></div>').join(''):'';
+    document.getElementById('subscribers').innerHTML=Array.isArray(subs)?subs.slice(0,30).map(s=>'<div class="border-b pb-2 mb-2">📧 '+(s.email||'')+'<br><small>'+(s.subscribed_at||s.created_at||'')+'</small></div>').join(''):'';
+  }catch(e){alert('เข้าสู่ระบบไม่สำเร็จ');}
+}
+const p=new URLSearchParams(window.location.search);
+if(p.get('pwd')){document.getElementById('pwdInput').value=p.get('pwd');login();}
+</script></body></html>

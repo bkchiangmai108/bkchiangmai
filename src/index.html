@@ -406,6 +406,54 @@
             animation: navDropdownFade 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
     </style>
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-XXXXXXXXXX');
+</script>
+
+<!-- JSON-LD Structured Data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Brahma Kumaris Chiang Mai",
+  "url": "https://bkchiangmai.com",
+  "description": "ศูนย์การเรียนรู้ราชาโยคะ สมาธิ และปัญญาแห่งชีวิต เชียงใหม่",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Chiang Mai",
+    "addressCountry": "TH"
+  }
+}
+</script>
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-XXXXXXXXXX');
+</script>
+
+<!-- JSON-LD Structured Data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Brahma Kumaris Chiang Mai",
+  "url": "https://bkchiangmai.com",
+  "description": "ศูนย์การเรียนรู้ราชาโยคะ สมาธิ และปัญญาแห่งชีวิต เชียงใหม่",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Chiang Mai",
+    "addressCountry": "TH"
+  }
+}
+</script>
 </head>
 
 <body>
@@ -522,7 +570,8 @@
                     <button id="lang-btn-en" onclick="setLanguage('en')"
                         class="px-2.5 py-1 rounded-full transition-all duration-300 text-slate-500 hover:text-[#cc4422]">EN</button>
                 </div>
-            </nav>
+            <button onclick="openContact()" class="ml-2 px-4 py-2 bg-[#cc4422] text-white rounded-lg text-sm font-semibold hover:bg-[#a3361b] transition">📩 ติดต่อเรา</button>
+</nav>
 
             <div class="flex items-center space-x-4 lg:hidden">
                 <!-- Mobile Language Switch Pill -->
@@ -5936,6 +5985,72 @@
             </div>
         </div>
     </div>
+<!-- Contact Form Modal -->
+<div id="contactModal" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50" style="display:none">
+  <div class="bg-white rounded-2xl p-8 max-w-md w-full mx-4 max-h-[90vh] overflow-y-auto">
+    <div class="flex justify-between items-center mb-6">
+      <h3 class="text-xl font-bold">📩 ติดต่อเรา</h3>
+      <button onclick="closeContact()" class="text-gray-500 text-2xl">&times;</button>
+    </div>
+    <form id="contactForm" onsubmit="submitContact(event)">
+      <input type="text" name="name" placeholder="ชื่อ-นามสกุล" required class="w-full border p-3 rounded-lg mb-3">
+      <input type="email" name="email" placeholder="อีเมล" required class="w-full border p-3 rounded-lg mb-3">
+      <input type="text" name="subject" placeholder="หัวข้อ (ไม่บังคับ)" class="w-full border p-3 rounded-lg mb-3">
+      <textarea name="message" rows="4" placeholder="ข้อความ" required class="w-full border p-3 rounded-lg mb-3"></textarea>
+      <button type="submit" class="w-full bg-[#cc4422] text-white py-3 rounded-lg font-bold text-lg">ส่งข้อความ ✉️</button>
+    </form>
+    <div id="contactSuccess" class="hidden text-center py-8">
+      <div class="text-6xl mb-4">🙏</div>
+      <h3 class="text-xl font-bold">ได้รับข้อความแล้ว!</h3>
+      <p class="text-gray-500 mt-2">เราจะติดต่อกลับโดยเร็วที่สุด</p>
+    </div>
+  </div>
+</div>
+<script>
+function openContact(){document.getElementById('contactModal').style.display='flex';}
+function closeContact(){document.getElementById('contactModal').style.display='none';document.getElementById('contactForm').style.display='block';document.getElementById('contactSuccess').classList.add('hidden');}
+async function submitContact(e){
+  e.preventDefault();
+  const data=Object.fromEntries(new FormData(e.target));
+  const res=await fetch('/api/contact',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});
+  const result=await res.json();
+  if(result.success){document.getElementById('contactForm').style.display='none';document.getElementById('contactSuccess').classList.remove('hidden');setTimeout(closeContact,3000);}
+  else{alert(result.error||'เกิดข้อผิดพลาด');}
+}
+</script>
+<!-- Contact Form Modal -->
+<div id="contactModal" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50" style="display:none">
+  <div class="bg-white rounded-2xl p-8 max-w-md w-full mx-4 max-h-[90vh] overflow-y-auto">
+    <div class="flex justify-between items-center mb-6">
+      <h3 class="text-xl font-bold">📩 ติดต่อเรา</h3>
+      <button onclick="closeContact()" class="text-gray-500 text-2xl">&times;</button>
+    </div>
+    <form id="contactForm" onsubmit="submitContact(event)">
+      <input type="text" name="name" placeholder="ชื่อ-นามสกุล" required class="w-full border p-3 rounded-lg mb-3">
+      <input type="email" name="email" placeholder="อีเมล" required class="w-full border p-3 rounded-lg mb-3">
+      <input type="text" name="subject" placeholder="หัวข้อ (ไม่บังคับ)" class="w-full border p-3 rounded-lg mb-3">
+      <textarea name="message" rows="4" placeholder="ข้อความ" required class="w-full border p-3 rounded-lg mb-3"></textarea>
+      <button type="submit" class="w-full bg-[#cc4422] text-white py-3 rounded-lg font-bold text-lg">ส่งข้อความ ✉️</button>
+    </form>
+    <div id="contactSuccess" class="hidden text-center py-8">
+      <div class="text-6xl mb-4">🙏</div>
+      <h3 class="text-xl font-bold">ได้รับข้อความแล้ว!</h3>
+      <p class="text-gray-500 mt-2">เราจะติดต่อกลับโดยเร็วที่สุด</p>
+    </div>
+  </div>
+</div>
+<script>
+function openContact(){document.getElementById('contactModal').style.display='flex';}
+function closeContact(){document.getElementById('contactModal').style.display='none';document.getElementById('contactForm').style.display='block';document.getElementById('contactSuccess').classList.add('hidden');}
+async function submitContact(e){
+  e.preventDefault();
+  const data=Object.fromEntries(new FormData(e.target));
+  const res=await fetch('/api/contact',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});
+  const result=await res.json();
+  if(result.success){document.getElementById('contactForm').style.display='none';document.getElementById('contactSuccess').classList.remove('hidden');setTimeout(closeContact,3000);}
+  else{alert(result.error||'เกิดข้อผิดพลาด');}
+}
+</script>
 </body>
 
 </html>

@@ -221,6 +221,56 @@ app.get('/api/reservations', (req, res) => {
 });
 
 // ===== Start Server =====
+
+// ===== Admin Dashboard =====
+const ADMIN_PASSWORD = 'bkcm2025';
+function requireAdmin(req, res, next) {
+  const pwd = req.query.pwd || req.headers['x-admin-key'];
+  if (pwd === ADMIN_PASSWORD) return next();
+  if (req.path.endsWith('.html')) return next();
+  return res.status(401).json({ error: 'Unauthorized' });
+}
+app.get('/admin', (req, res) => {
+  res.sendFile(path.join(__dirname, 'admin.html'));
+});
+app.get('/api/admin/reservations', requireAdmin, (req, res) => {
+  res.json(loadJSON('reservations.json').reverse().slice(0, 100));
+});
+app.get('/api/admin/contacts', requireAdmin, async (req, res) => {
+  try { if (pool) { const [rows] = await pool.execute('SELECT * FROM contacts ORDER BY created_at DESC LIMIT 100'); return res.json(rows); } } catch {}
+  res.json(loadJSON('contacts.json').reverse().slice(0, 100));
+});
+app.get('/api/admin/subscribers', requireAdmin, async (req, res) => {
+  try { if (pool) { const [rows] = await pool.execute('SELECT * FROM subscribers ORDER BY subscribed_at DESC LIMIT 100'); return res.json(rows); } } catch {}
+  res.json(loadJSON('subscribers.json').reverse().slice(0, 100));
+});
+app.get('/api/admin/stats', requireAdmin, async (req, res) => {
+  try {
+    const stats = {};
+    if (pool) {
+      const [[{c}]] = await pool.execute('SELECT COUNT(*) as c FROM contacts'); stats.contacts = c;
+      const [[{s}]] = await pool.execute('SELECT COUNT(*) as s FROM subscribers'); stats.subscribers = s;
+      const [[{r}]] = await pool.execute("SELECT COUNT(*) as r FROM contacts WHERE type='reservation'"); stats.reservations = r;
+      const [[{v}]] = await pool.execute('SELECT COUNT(*) as v FROM page_views'); stats.pageViews = v;
+    } else {
+      stats.contacts = (loadJSON('contacts.json')).length;
+      stats.subscribers = (loadJSON('subscribers.json')).length;
+      stats.reservations = (loadJSON('reservations.json')).length;
+      stats.pageViews = (loadJSON('pageviews.json')).length;
+    }
+    res.json(stats);
+  } catch (e) { res.json({ error: e.message }); }
+});
+
+
+// ===== SEO Routes =====
+app.get('/sitemap.xml', (req, res) => {
+  res.sendFile(path.join(__dirname, 'sitemap.xml'));
+});
+app.get('/robots.txt', (req, res) => {
+  res.sendFile(path.join(__dirname, 'robots.txt'));
+});
+
 app.listen(PORT, () => {
   console.log(`============================================================`);
   console.log(` 🌐 bkchiangmai.com Server is running on port ${PORT}`);
