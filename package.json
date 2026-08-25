@@ -1,0 +1,17 @@
+{
+  "name": "bk-chiang-mai-v3",
+  "version": "3.0.0",
+  "description": "Brahma Kumaris Chiang Mai Meditation Web App",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "@tailwindcss/vite": "^4.3.3",
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "mysql2": "^3.11.0",
+    "tailwindcss": "^4.3.3"
+  }
+}
