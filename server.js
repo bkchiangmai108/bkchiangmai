@@ -223,10 +223,12 @@ app.get('/api/reservations', (req, res) => {
 // ===== Start Server =====
 
 // ===== Admin Dashboard =====
-const ADMIN_PASSWORD = 'bkcm2025';
+// รหัสผ่าน admin อ่านจาก environment variable (ไฟล์ .env บนเซิร์ฟเวอร์)
+// ไม่ hardcode ในโค้ด — ถ้ายังไม่ตั้ง ADMIN_PASSWORD ระบบจะปฏิเสธทุก request (fail-closed)
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || '';
 function requireAdmin(req, res, next) {
   const pwd = req.query.pwd || req.headers['x-admin-key'];
-  if (pwd === ADMIN_PASSWORD) return next();
+  if (ADMIN_PASSWORD && pwd === ADMIN_PASSWORD) return next();
   if (req.path.endsWith('.html')) return next();
   return res.status(401).json({ error: 'Unauthorized' });
 }
