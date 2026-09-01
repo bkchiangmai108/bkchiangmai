@@ -3695,64 +3695,78 @@ gtag('config', 'G-XXXXXXXXXX');
         // --- Hero Section Ambient Music System ---
         let isHeroMusicUnmuted = false;
 
-        function toggleHeroMusic() {
+        function playHeroMusic() {
             const audio = document.getElementById('heroAudio');
             const icon = document.getElementById('heroMusicIcon');
             const text = document.getElementById('heroMusicText');
 
-            if (audio.paused) {
-                // Stop HQ music if running
-                const hqAudio = document.getElementById('hqAudio');
-                if (hqAudio && !hqAudio.paused) {
-                    hqAudio.pause();
-                    const btnText = document.getElementById('musicBtnText');
-                    const hqIcon = document.getElementById('musicIcon');
-                    if (btnText && hqIcon) {
-                        btnText.setAttribute('data-i18n', 'music_btn_unmute');
-                        btnText.textContent = currentLang === 'th' ? 'เปิดเสียง' : 'Unmute';
-                        hqIcon.className = 'fas fa-volume-mute';
-                    }
+            // Stop HQ music if running
+            const hqAudio = document.getElementById('hqAudio');
+            if (hqAudio && !hqAudio.paused) {
+                hqAudio.pause();
+                const btnText = document.getElementById('musicBtnText');
+                const hqIcon = document.getElementById('musicIcon');
+                if (btnText && hqIcon) {
+                    btnText.setAttribute('data-i18n', 'music_btn_unmute');
+                    btnText.textContent = currentLang === 'th' ? 'เปิดเสียง' : 'Unmute';
+                    hqIcon.className = 'fas fa-volume-mute';
                 }
+            }
 
-                // Stop Course music if running
-                const courseAudio = document.getElementById('courseAudio');
-                if (courseAudio && !courseAudio.paused) {
-                    courseAudio.pause();
-                    const courseMusicIcon = document.getElementById('courseMusicIcon');
-                    const courseMusicText = document.getElementById('courseMusicText');
-                    if (courseMusicIcon && courseMusicText) {
-                        courseMusicIcon.className = "fas fa-volume-mute text-[#cc4422] text-sm";
-                        courseMusicText.setAttribute('data-i18n', 'music_course_unmute');
-                        courseMusicText.textContent = currentLang === 'th' ? 'เปิดเพลงบรรเลง 7 วัน' : 'Unmute Course Music';
-                    }
+            // Stop Course music if running
+            const courseAudio = document.getElementById('courseAudio');
+            if (courseAudio && !courseAudio.paused) {
+                courseAudio.pause();
+                const courseMusicIcon = document.getElementById('courseMusicIcon');
+                const courseMusicText = document.getElementById('courseMusicText');
+                if (courseMusicIcon && courseMusicText) {
+                    courseMusicIcon.className = "fas fa-volume-mute text-[#cc4422] text-sm";
+                    courseMusicText.setAttribute('data-i18n', 'music_course_unmute');
+                    courseMusicText.textContent = currentLang === 'th' ? 'เปิดเพลงบรรเลง 7 วัน' : 'Unmute Course Music';
                 }
+            }
 
-                audio.src = "../assets/videos/hero-ambient.mp3";
-                audio.volume = 0;
-                audio.play().then(() => {
-                    isHeroMusicUnmuted = true;
-                    gsap.to(audio, { volume: 0.4, duration: 1.5 });
-                    icon.className = "fas fa-volume-up text-emerald-600 animate-bounce";
+            audio.src = "../assets/videos/hero-ambient.mp3";
+            audio.volume = 0;
+            return audio.play().then(() => {
+                isHeroMusicUnmuted = true;
+                gsap.to(audio, { volume: 0.4, duration: 1.5 });
+                if (icon) icon.className = "fas fa-volume-up text-emerald-600 animate-bounce";
+                if (text) {
                     text.setAttribute('data-i18n', 'hero_btn_music_mute');
                     text.textContent = currentLang === 'th' ? 'ปิดเสียงเพลงหน้าแรก' : 'Mute Background Music';
-                }).catch(e => {
+                }
+            });
+        }
+
+        function pauseHeroMusic() {
+            const audio = document.getElementById('heroAudio');
+            const icon = document.getElementById('heroMusicIcon');
+            const text = document.getElementById('heroMusicText');
+            isHeroMusicUnmuted = false;
+            gsap.to(audio, {
+                volume: 0,
+                duration: 1.0,
+                onComplete: () => audio.pause()
+            });
+            if (icon) icon.className = "fas fa-volume-mute text-[#cc4422]";
+            if (text) {
+                text.setAttribute('data-i18n', 'hero_btn_music');
+                text.textContent = currentLang === 'th' ? 'เปิดเพลงบรรเลงหน้าแรก' : 'Play Background Music';
+            }
+        }
+
+        function toggleHeroMusic() {
+            const audio = document.getElementById('heroAudio');
+            if (audio.paused) {
+                playHeroMusic().catch(e => {
                     alert(currentLang === 'th'
                         ? 'ขออภัยด้วยครับ ยังไม่มีไฟล์เพลงบรรเลงนี้ในโฟลเดอร์ \n\nกรุณาเตรียมไฟล์ MP3 และบันทึกไว้ที่: \n' + audio.src.replace(/.*\/(assets\/)/, '$1')
                         : 'Sorry, this audio file is not available in the folder yet. \n\nPlease prepare the MP3 file and save it to: \n' + audio.src.replace(/.*\/(assets\/)/, '$1'));
                     console.warn("Audio play blocked or file missing:", e);
                 });
             } else {
-                isHeroMusicUnmuted = false;
-                gsap.to(audio, {
-                    volume: 0,
-                    duration: 1.0,
-                    onComplete: () => {
-                        audio.pause();
-                    }
-                });
-                icon.className = "fas fa-volume-mute text-[#cc4422]";
-                text.setAttribute('data-i18n', 'hero_btn_music');
-                text.textContent = currentLang === 'th' ? 'เปิดเพลงบรรเลงหน้าแรก' : 'Play Background Music';
+                pauseHeroMusic();
             }
         }
 
@@ -4716,6 +4730,35 @@ gtag('config', 'G-XXXXXXXXXX');
             }
         }
 
+        // [FIX] ตั้งข้อความ i18n โดยคง element ลูก (เช่น <i> ไอคอนในปุ่ม) ไม่ให้ถูกลบ
+        function setI18nText(el, value) {
+            if (!el) return;
+            // แบบที่ 1: ข้อความอยู่ใน <span> ซ้อน (ไอคอนนำหน้า) -> แก้ที่ span
+            const span = el.querySelector('span');
+            if (span) { span.textContent = value; return; }
+            const first = el.firstChild;
+            // แบบที่ 2: ข้อความนำหน้า (อาจตามด้วยไอคอน) -> แทนที่ text node แรก
+            if (first && first.nodeType === 3) {
+                first.textContent = value;
+                let n = first.nextSibling;
+                while (n) {
+                    const next = n.nextSibling;
+                    if (n.nodeType === 3) n.remove();
+                    n = next;
+                }
+                return;
+            }
+            // แบบที่ 3: ไอคอนนำหน้าแบบไม่มี span -> ใส่ข้อความต่อท้ายไอคอน
+            const icon = el.querySelector('i');
+            if (icon) {
+                let n = icon.nextSibling;
+                while (n && n.nodeType === 3) { const nx = n.nextSibling; n.remove(); n = nx; }
+                icon.insertAdjacentText('afterend', ' ' + value);
+                return;
+            }
+            el.textContent = value;
+        }
+
         function setLanguage(lang) {
             if (lang === currentLang) return;
             currentLang = lang;
@@ -4734,7 +4777,7 @@ gtag('config', 'G-XXXXXXXXXX');
             document.querySelectorAll('[data-i18n]').forEach(el => {
                 const key = el.getAttribute('data-i18n');
                 if (translations[lang][key]) {
-                    el.textContent = translations[lang][key];
+                    setI18nText(el, translations[lang][key]);
                 }
             });
 
@@ -5038,6 +5081,25 @@ gtag('config', 'G-XXXXXXXXXX');
 
         // Close modals when clicking background
         document.addEventListener('DOMContentLoaded', () => {
+            // [FIX] Force-apply current language (th) once on load:
+            // ข้อความที่ hardcode ใน HTML บางส่วนเป็นภาษาอังกฤษหรือตัดให้สั้น ("...")
+            // setLanguage('th') แบบปกติจะ early-return เพราะ currentLang เป็น 'th' อยู่แล้ว
+            // จึงต้องบังคับเรนเดอร์ข้อความเต็มจากพจนานุกรมทุกครั้งที่เปิดหน้า
+            (function applyInitialLanguage() {
+                const initialLang = 'th';
+                currentLang = initialLang;
+                document.querySelectorAll('[data-i18n]').forEach(el => {
+                    const key = el.getAttribute('data-i18n');
+                    if (translations[initialLang] && translations[initialLang][key]) {
+                        setI18nText(el, translations[initialLang][key]);
+                    }
+                });
+                const btnTh = document.getElementById('lang-btn-th');
+                const btnThM = document.getElementById('lang-btn-th-mobile');
+                if (btnTh) btnTh.className = 'px-2.5 py-1 rounded-full transition-all duration-300 bg-[#d4af37] text-white';
+                if (btnThM) btnThM.className = 'px-2 py-0.5 rounded-full transition-all duration-300 bg-[#d4af37] text-white';
+            })();
+
             // Initialize Daily Thought for Today (Option A: Date-based 1 - 31)
             if (typeof DAILY_THOUGHTS !== 'undefined') {
                 const today = new Date().getDate(); // 1 - 31
@@ -5083,6 +5145,25 @@ gtag('config', 'G-XXXXXXXXXX');
                     if (e.target === ytModal) {
                         closeYoutubePlayerModal();
                     }
+                });
+            }
+
+            // [FIX] Auto-start Hero ambient music (ตามข้อแรกที่ขอ: เปิดเพลงเลยตอนเข้าหน้าแรก)
+            // ปิดอัตโนมัติเมื่อเลื่อนออกจาก Hero ทำงานอยู่แล้วผ่าน ScrollTrigger (onLeave/onLeaveBack)
+            // ถ้าเบราว์เซอร์บล็อก autoplay (ยังไม่มีการสัมผัสหน้าจอ) จะเริ่มเล่นทันทีที่ผู้ใช้แตะ/กดครั้งแรก
+            const heroAudioEl = document.getElementById('heroAudio');
+            if (heroAudioEl && heroAudioEl.paused) {
+                playHeroMusic().catch(() => {
+                    const startHeroOnGesture = () => {
+                        if (isHeroMusicUnmuted) {
+                            ['pointerdown', 'keydown', 'touchstart'].forEach(ev => window.removeEventListener(ev, startHeroOnGesture));
+                            return;
+                        }
+                        playHeroMusic().then(() => {
+                            ['pointerdown', 'keydown', 'touchstart'].forEach(ev => window.removeEventListener(ev, startHeroOnGesture));
+                        }).catch(() => { });
+                    };
+                    ['pointerdown', 'keydown', 'touchstart'].forEach(ev => window.addEventListener(ev, startHeroOnGesture, { passive: true }));
                 });
             }
         });
