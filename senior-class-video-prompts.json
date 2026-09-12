@@ -1,0 +1,66 @@
+{
+  "project": "Brahma Kumaris Chiang Mai — Senior Class Section Video Prompts",
+  "model": "google-omni-1.1-flash",
+  "mode": "image-to-video / text-to-video loop",
+  "duration_seconds": 10,
+  "loop": true,
+  "aspect_ratio": "16:9",
+  "resolution": "1080p",
+  "global_negative_prompt": "no text artifacts, no distorted faces, no detailed human faces, no violence, no watermarks, no rapid camera shake",
+  "prompts": [
+    {
+      "id": "cat1",
+      "name": "BKCM_SeniorClass_Cat1_AdvancedWisdom_Loop10s",
+      "seed": 1101,
+      "description_th": "หมวดที่ 1: ปัญญาญาณและการชำระสัมสการ (Advanced Wisdom & Sanskar Transformation)",
+      "description_en": "Deep mechanics of Mind, Intellect & Sanskars; Law of Karma in thought; erasing habits carried across lifetimes.",
+      "prompt": {
+        "scene": "A luminous translucent human silhouette seated in deep meditation, floating in a vast cosmic void of deep indigo and gold. Inside the silhouette's chest, a glowing lotus-shaped 'mind factory' is visible — thousands of tiny golden thought-seeds drift upward from it like luminous pollen. Below the figure, faint ghostly layers of past-life selves dissolve and fade into light, being absorbed upward into the present form — symbolizing sanskar transformation across lifetimes. Threads of karma made of soft golden light spiral around the figure, then unwind and release, dissolving into pure white sparks.",
+        "camera": "Slow dolly-in from medium shot to close-up on the glowing chest lotus, ending in a gentle orbital drift — seamless loop back to start frame.",
+        "lighting": "Volumetric god rays in warm gold against deep indigo darkness, soul-star point of light at the forehead, soft inner glow pulsing from the chest.",
+        "motion": "Thought-seeds float upward continuously; past-life ghost layers dissolve slowly; karma threads unwind in a spiral; light pulses breathe with a 10-second rhythm matching the loop point.",
+        "text_overlay_th": "หมวดที่ 1: ปัญญาญาณและการชำระสัมสการ",
+        "text_overlay_en": "Advanced Wisdom & Sanskar Transformation",
+        "text_style": "Elegant Thai serif (Sarabun-like), thin gold letters, fade in at 2s, hold, fade out at 8s — never obscuring the figure.",
+        "palette": ["#0b1026 deep indigo", "#d4af37 temple gold", "#fff8e1 warm white", "#7a5cff soul violet"],
+        "audio_hint": "ambient singing bowl hum with soft heartbeat-like pulse, 60 BPM, looping seamlessly"
+      }
+    },
+    {
+      "id": "cat2",
+      "name": "BKCM_SeniorClass_Cat2_DeepYoga_Loop10s",
+      "seed": 2202,
+      "description_th": "หมวดที่ 2: พลังโยคะและการบำเพ็ญตบะ (Deep Yoga & Power of Tapasya)",
+      "description_en": "Elevate concentration beyond the senses; link the soul to the Soul World (Paramdham); awaken all 8 spiritual powers.",
+      "prompt": {
+        "scene": "A soul made of pure golden light rises slowly upward from a mountain peak at night, leaving the physical world below like a fading photograph. A thread of living light — a 'divine link' — extends upward from the soul's forehead toward a radiant point of Supreme Light at the top of frame (Paramdham, the Soul World), depicted as a soft golden-red sun of consciousness beyond a veil of stars. As the thread connects, eight small flame-orbs ignite one by one in a circle around the soul — the 8 spiritual powers awakening in sequence, each pulse of light ripples gently down the connecting thread.",
+        "camera": "Slow vertical rise following the soul upward, slight upward tilt at the moment of connection — loop by the soul dissolving back into starlight and re-emerging from the mountain.",
+        "lighting": "Night-to-light transition: cold blue night below transforming to warm golden radiance above, the Supreme Light pulsing like a heartbeat at the top of the frame.",
+        "motion": "Upward drifting particles like reverse snow; the light-thread vibrates subtly; the 8 flame-orbs ignite at 1-second intervals starting at 2s; final 2 seconds hold the full connected glow.",
+        "text_overlay_th": "หมวดที่ 2: พลังโยคะและการบำเพ็ญตบะ",
+        "text_overlay_en": "Deep Yoga & Power of Tapasya",
+        "text_style": "Elegant Thai serif, thin gold letters with a subtle glow, fade in at 2s, fade out at 8s.",
+        "palette": ["#060b1c midnight", "#1c3f6e night blue", "#d4af37 temple gold", "#ff9d45 supreme ember"],
+        "audio_hint": "deep om drone rising in pitch with soft bell at the moment of divine connection, seamless loop"
+      }
+    },
+    {
+      "id": "cat3",
+      "name": "BKCM_SeniorClass_Cat3_Karmateet_Loop10s",
+      "seed": 3303,
+      "description_th": "หมวดที่ 3: ศิลปะการดำเนินชีวิตสู่สภาวะกรรมตีต (Karmateet & Pure Living)",
+      "description_en": "Spiritual power in action (Karma Yoga); the detached observer; radiating Shakti vibrations; the role of a trustee.",
+      "prompt": {
+        "scene": "A serene golden-lit figure walks calmly through a busy waking world — market stalls, flowing traffic, people in motion all rendered as soft translucent watercolor ghosts streaming past. The central figure alone is solid, warm and still, walking with quiet grace. Above the figure's head floats a small radiant 'observer soul' — a second point of golden light watching from just above, detached and calm. As the figure walks, waves of soft golden-white vibration radiate outward from the heart in gentle concentric rings, and the ghostly world around them briefly blooms into color and peace wherever the rings touch — nature, people, and even the city sky brighten momentarily. The figure's shadow is made of light instead of darkness, anchored like a golden lotus trail on the ground.",
+        "camera": "Smooth tracking shot alongside the walking figure at eye level, world streaming past; the concentric light-rings pulse every ~2.5 seconds — 4 pulses across the 10-second loop, ending matching the start frame.",
+        "lighting": "Warm gold centered on the figure, desaturated cool grey-blue world around it that warms briefly where light-rings pass — day-neutral outdoor light with an inner spiritual glow.",
+        "motion": "Figure walks at a steady unhurried pace; ghost-crowds flow past in soft time-lapse; light-rings expand from the heart; the observer-soul above the head hovers with a gentle bob; final frame mirrors the first for a perfect loop.",
+        "text_overlay_th": "หมวดที่ 3: ศิลปะการดำเนินชีวิตสู่สภาวะกรรมตีต",
+        "text_overlay_en": "Karmateet & Pure Living",
+        "text_style": "Elegant Thai serif, thin gold letters, fade in at 2s, fade out at 8s — placed in upper third, clear of the walking figure.",
+        "palette": ["#e8e2d5 soft parchment", "#d4af37 temple gold", "#5a6b7c ghost blue-grey", "#fff8e1 warm white"],
+        "audio_hint": "gentle walking rhythm blended with soft pad chords; each light-ring pulse adds a warm chime layer, seamless loop"
+      }
+    }
+  ]
+}
