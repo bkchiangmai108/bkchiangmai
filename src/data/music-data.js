@@ -16,6 +16,24 @@ const MUSIC_DATA = {
         videos: [
             {
                 id: "m1",
+                youtubeId: "zzUDrbAxSyQ",
+                titleTH: "ท่วงทำนองสู่ความสงบนิ่งอันบริสุทธิ์ - Amritvela Deep Silence",
+                titleEN: "Amritvela Deep Silence - Journey to Inner Stillness",
+                duration: "53:00",
+                descTH: "บทเพลงบรรเลงความยาว 53 นาที เรียงร้อยท่วงทำนองอันนุ่มนวลและช่วงว่างแห่งความเงียบ (Silence) เพื่อช่วยชะลอความคิด คลายความกังวล และเปิดพื้นที่ให้ดวงจิตได้สัมผัสความอบอุ่น มั่นคง และสันติสุขที่แท้จริง เหมาะสำหรับการนั่งสมาธิภาวนายามเช้า (Amritvela Meditation)",
+                descEN: "A 53-minute melody woven with gentle tones and moments of silence, helping to slow the mind, release worries, and let the soul touch true warmth, stability and peace. Ideal for early-morning Amritvela meditation."
+            },
+            {
+                id: "m2",
+                youtubeId: "OLL8pkGIEwI",
+                titleTH: "ท่วงทำนองแห่งสันติภาพ | ดนตรีเติมพลังใจยามเช้า (Sound of Peace)",
+                titleEN: "Sound of Peace - Music to Awaken Your Morning",
+                duration: "25:00",
+                descTH: "บทเพลงบรรเลงความยาว 25 นาที ออกแบบให้ส่งผ่านคลื่นเสียงแห่งความกลมกลืน ช่วยปลดเปลื้องความเหนื่อยล้า ฟื้นฟูความแจ่มใส และคืนสมดุลให้ทั้งร่างกายและจิตใจ เหมาะสำหรับฟังคลอระหว่างรับประทานอาหารเช้า เตรียมความพร้อมทางอารมณ์ก่อนเริ่มงาน และฝึกคิดบวก",
+                descEN: "A 25-minute composition designed to transmit harmonious soundwaves that release fatigue, restore clarity and rebalance body and mind. Perfect while enjoying breakfast, preparing your emotions for the day ahead, and cultivating positive thoughts."
+            },
+            {
+                id: "m3",
                 youtubeId: "GHO-5M5fg7U",
                 titleTH: "แสงแห่งโชคและการตื่นรู้",
                 titleEN: "Morning Meditation Music for Positive Energy",
@@ -24,7 +42,7 @@ const MUSIC_DATA = {
                 descEN: "Have you ever felt like... this very morning, you could start changing your destiny right away?"
             },
             {
-                id: "m2",
+                id: "m4",
                 youtubeId: "f4K6wP-XoD0",
                 titleTH: "บทเพลงจิตวิญญาณ ต้อนรับอรุณรุ่งแห่งความสุข",
                 titleEN: "Spiritual Chants for Morning Joy & Peace",
@@ -33,7 +51,7 @@ const MUSIC_DATA = {
                 descEN: "Pure peaceful rhythms designed for morning Rajyoga reflection."
             },
             {
-                id: "m3",
+                id: "m5",
                 youtubeId: "1ZYbU87XA2U",
                 titleTH: "เสียงเพลงสมาธิราชาโยคะ เติมพลังบริสุทธิ์",
                 titleEN: "Rajyoga Awakening Chants & Peaceful Waves",
@@ -42,7 +60,7 @@ const MUSIC_DATA = {
                 descEN: "Absorb positive vibrations and cultivate kindness for the day ahead."
             },
             {
-                id: "m4",
+                id: "m6",
                 youtubeId: "W5K3AKl5qM8",
                 titleTH: "ดนตรีขลุ่ยยามเช้า ผ่อนคลายและสร้างสมาธิ",
                 titleEN: "Morning Flute & Peaceful Harmony",
@@ -51,7 +69,7 @@ const MUSIC_DATA = {
                 descEN: "Soft flute melodies harmonized with nature to boost morning mindfulness."
             },
             {
-                id: "m5",
+                id: "m7",
                 youtubeId: "sJlz_oU653M",
                 titleTH: "เสียงเปียโนนุ่มนวล สร้างพลังความบวก",
                 titleEN: "Gentle Piano for Morning Vitality",
@@ -60,7 +78,7 @@ const MUSIC_DATA = {
                 descEN: "Calming piano strokes to cultivate deep serenity and daily balance."
             },
             {
-                id: "m6",
+                id: "m8",
                 youtubeId: "g1r9nK911Sg",
                 titleTH: "ดนตรีบรรเลงจิตวิญญาณ ปรับคลื่นพลังชีวิต",
                 titleEN: "Soulful Ambient Waves for Early Focus",
