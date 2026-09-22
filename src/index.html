@@ -6534,19 +6534,18 @@ async function submitContact(e){
     endDate:   new Date("2026-10-18T23:59:59+07:00"),   // จบแสดง (หลังนี้ = ซ่อนอัตโนมัติ)
     barMessage: "งานสัมมนา 7 วัน 7 วิธี รีเซ็ตใจ · Soul Synergy @ Lanna Expo 2026",
     barMessageEn: "Meditation Seminar · 7 Days 7 Ways · Soul Synergy @ Lanna Expo 2026",
-    btnLabel: "ลงทะเบียนฟังสัมมนาฟรี",
-    btnLabelEn: "Register Free",
-    floatLabel: "ลงทะเบียนฟรี",
-    floatLabelEn: "Free",
-    link: "https://docs.google.com/forms/d/e/1FAIpQLScKjCjoplR1gbl9CDuB61XXhGuBzrIfjRCVpYenXW_MtD1jyA/viewform",
+    btnLabel: "ข้อมูลเพิ่มเติม",
+    btnLabelEn: "More Info",
+    floatLabel: "งานสัมมนา ลงทะเบียนฟรี",
+    floatLabelEn: "Seminar · Register",
+    infoLink: "#events",              // ปุ่มแถบบน → ไป section กิจกรรม (anchor ในหน้า)
+    link: "https://docs.google.com/forms/d/e/1FAIpQLScKjCjoplR1gbl9CDuB61XXhGuBzrIfjRCVpYenXW_MtD1jyA/viewform",   // ปุ่มลอย → ฟอร์มลงทะเบียน
     accentDark: "#1e3d2a",        // เขียวเข้ม (ธีม Lanna)
     accentGold: "#d4af37"         // ทอง
   };
   var now = new Date();
   if (now < cfg.startDate || now > cfg.endDate) return;   // ซ่อนช่วงนอกงาน (auto-hide ตามวัน)
-
-  var ls = "announce_"+cfg.id;
-  if (localStorage.getItem(ls)==="closed") return;        // ผู้ใช้กด X ปิดเอง
+  // หมายเหตุ: กด X ปิดแล้ว — ปิดแค่ครั้งเดียวในหน้านั้น (ไม่จำผ่าน localStorage) → รีเฟรช/เปิดใหม่ แถบกลับมาโชว์
 
   // --- บอกภาษา (reuse ของเดิม th/en ใน window ถ้ามี) ---
   var lang = (typeof currentLang!=="undefined") ? currentLang : "th";
@@ -6577,13 +6576,12 @@ async function submitContact(e){
   bar.innerHTML =
     '<span class="ab-badge">Soul Synergy @ Lanna Expo 2026</span>'+
     '<span class="ab-txt">'+L(cfg.barMessage,cfg.barMessageEn)+'</span>'+
-    '<a class="ab-btn" href="'+cfg.link+'" target="_blank" rel="noopener">'+
-      '<i class="fas fa-pen-to-square"></i>'+L(cfg.btnLabel,cfg.btnLabelEn)+'</a>'+
+    '<a class="ab-btn" href="'+cfg.infoLink+'">'+
+      '<i class="fas fa-circle-info"></i>'+L(cfg.btnLabel,cfg.btnLabelEn)+'</a>'+
     '<button class="ab-close" aria-label="ปิด">&#10005;</button>';
   bar.querySelector(".ab-close").addEventListener("click", function(ev){
     ev.preventDefault(); ev.stopPropagation();
-    bar.style.display="none";
-    try{ localStorage.setItem(ls,"closed"); }catch(e){}
+    bar.style.display="none";     // ปิดแค่หน้านี้ (ไม่บันทึก → รีเฟรช/เปิดใหม่แล้วกลับมาโชว์)
   });
   document.body.appendChild(bar);
   // เลื่อน body/header ลง ให้ไม่โดนแถบ
