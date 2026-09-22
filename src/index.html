@@ -6520,6 +6520,90 @@ async function submitContact(e){
 }
 </script>
 <!-- Lanna Expo Poster Lightbox -->
+<!-- ===== ANNOUNCEMENT BAR + FLOAT BUTTON (auto-hide by date, reusable) ===== -->
+<script>
+/* ======================================================================
+   ACTIVE EVENT ANNOUNCEMENT  —  เปลี่ยน config นี้สำหรับงานหน้าใหม่
+   - แสดงเฉพาะในช่วง [startDate .. endDate] เท่านั้น (หลังเลย = ซ่อนอัตโนมัติ)
+   - ใช้ซ้ำได้: เปลี่ยนวัน/ข้อความ/ลิงก์/สี แล้ว deploy ใหม่
+   ====================================================================== */
+(function(){
+  var cfg = {
+    id: "lanna2026",               // ระบุตัวตนงาน (เมื่อจบแล้วเปลี่ยน id ใหม่ ระบบจะ reset การปิดเอง)
+    startDate: new Date("2026-09-01T00:00:00+07:00"),   // เริ่มแสดง (ก่อนนี้ไม่โผล่) — ตั้งให้เห็นได้ตอนโปรโมตล่วงหน้า
+    endDate:   new Date("2026-10-18T23:59:59+07:00"),   // จบแสดง (หลังนี้ = ซ่อนอัตโนมัติ)
+    barMessage: "งานสัมมนา 7 วัน 7 วิธี รีเซ็ตใจ · Soul Synergy @ Lanna Expo 2026",
+    barMessageEn: "Meditation Seminar · 7 Days 7 Ways · Soul Synergy @ Lanna Expo 2026",
+    btnLabel: "ลงทะเบียนฟังสัมมนาฟรี",
+    btnLabelEn: "Register Free",
+    floatLabel: "ลงทะเบียนฟรี",
+    floatLabelEn: "Free",
+    link: "https://docs.google.com/forms/d/e/1FAIpQLScKjCjoplR1gbl9CDuB61XXhGuBzrIfjRCVpYenXW_MtD1jyA/viewform",
+    accentDark: "#1e3d2a",        // เขียวเข้ม (ธีม Lanna)
+    accentGold: "#d4af37"         // ทอง
+  };
+  var now = new Date();
+  if (now < cfg.startDate || now > cfg.endDate) return;   // ซ่อนช่วงนอกงาน (auto-hide ตามวัน)
+
+  var ls = "announce_"+cfg.id;
+  if (localStorage.getItem(ls)==="closed") return;        // ผู้ใช้กด X ปิดเอง
+
+  // --- บอกภาษา (reuse ของเดิม th/en ใน window ถ้ามี) ---
+  var lang = (typeof currentLang!=="undefined") ? currentLang : "th";
+  function L(th,en){ return lang==="en"?en:th; }
+
+  var css = document.createElement("style");
+  css.textContent =
+    "#bkAnnounceBar{position:fixed;top:0;left:0;right:0;z-index:1100;display:flex;align-items:center;justify-content:center;gap:12px;padding:9px 46px 9px 16px;background:linear-gradient(90deg,"+cfg.accentDark+" 0%,"+cfg.accentGold+" 160%);color:#fff;font-family:'Sarabun','Noto Sans Thai',sans-serif;font-size:14px;font-weight:600;box-shadow:0 4px 18px rgba(0,0,0,.18)}"+
+    "#bkAnnounceBar .ab-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(212,175,55,.18);border:1px solid rgba(212,175,55,.5);color:"+cfg.accentGold+";border-radius:999px;padding:3px 10px;font-size:11px;font-weight:700;letter-spacing:.04em;white-space:nowrap}"+
+    "#bkAnnounceBar .ab-txt{flex:0 1 auto;text-align:left;line-height:1.35}"+
+    "#bkAnnounceBar .ab-btn{display:inline-flex;align-items:center;gap:7px;background:"+cfg.accentGold+";color:"+cfg.accentDark+";border-radius:999px;padding:7px 16px;font-weight:700;font-size:13px;white-space:nowrap;text-decoration:none;transition:transform .2s}"+
+    "#bkAnnounceBar .ab-btn:hover{transform:translateY(-1px);filter:brightness(1.05)}"+
+    "#bkAnnounceBar .ab-close{position:absolute;right:10px;top:50%;transform:translateY(-50%);width:30px;height:30px;border:none;background:rgba(255,255,255,.14);color:#fff;border-radius:50%;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center}"+
+    "#bkAnnounceBar .ab-close:hover{background:rgba(255,255,255,.28)}"+
+    ".bkFloatBtn{position:fixed;right:22px;bottom:26px;z-index:1100;display:inline-flex;align-items:center;gap:8px;"+
+      "padding:13px 20px;border-radius:999px;background:linear-gradient(135deg,"+cfg.accentDark+","+cfg.accentGold+");color:#fff;"+
+      "font-family:'Sarabun','Noto Sans Thai',sans-serif;font-size:15px;font-weight:700;text-decoration:none;"+
+      "box-shadow:0 10px 28px rgba(0,0,0,.30);border:2px solid rgba(255,255,255,.22);"+
+      "transition:transform .25s, box-shadow .25s;animation:bkFloatPulse 2.6s infinite ease-in-out}"+
+    ".bkFloatBtn:hover{transform:translateY(-3px);box-shadow:0 16px 36px rgba(0,0,0,.35)}"+
+    "@keyframes bkFloatPulse{0%,100%{box-shadow:0 10px 28px rgba(0,0,0,.3)}50%{box-shadow:0 10px 34px rgba(212,175,55,.35)}}"+
+    "@media(max-width:640px){#bkAnnounceBar{font-size:12.5px;padding:8px 44px 8px 12px;gap:8px}#bkAnnounceBar .ab-badge{display:none}.bkFloatBtn{right:14px;bottom:18px;font-size:14px;padding:12px 16px}}";
+  document.head.appendChild(css);
+
+  // --- แถบประกาศบนสุด (fixed top) ---
+  var bar = document.createElement("div");
+  bar.id = "bkAnnounceBar";
+  bar.innerHTML =
+    '<span class="ab-badge">Soul Synergy @ Lanna Expo 2026</span>'+
+    '<span class="ab-txt">'+L(cfg.barMessage,cfg.barMessageEn)+'</span>'+
+    '<a class="ab-btn" href="'+cfg.link+'" target="_blank" rel="noopener">'+
+      '<i class="fas fa-pen-to-square"></i>'+L(cfg.btnLabel,cfg.btnLabelEn)+'</a>'+
+    '<button class="ab-close" aria-label="ปิด">&#10005;</button>';
+  bar.querySelector(".ab-close").addEventListener("click", function(ev){
+    ev.preventDefault(); ev.stopPropagation();
+    bar.style.display="none";
+    try{ localStorage.setItem(ls,"closed"); }catch(e){}
+  });
+  document.body.appendChild(bar);
+  // เลื่อน body/header ลง ให้ไม่โดนแถบ
+  document.body.style.paddingTop=(bar.offsetHeight||40)+"px";
+  window.addEventListener("resize",function(){ document.body.style.paddingTop=bar.offsetHeight+"px"; });
+
+  // --- ปุ่มลอยมุมขวาล่าง ---
+  var fb = document.createElement("a");
+  fb.className="bkFloatBtn";
+  fb.href=cfg.link; fb.target="_blank"; fb.rel="noopener";
+  fb.innerHTML='<i class="fas fa-calendar-check" style="color:'+cfg.accentGold+'"></i>'+L(cfg.floatLabel,cfg.floatLabelEn);
+  document.body.appendChild(fb);
+
+  // เปิดขึ้นมาใหม่ (เช่น bootstrap) ให้มั่นใจว่าอันเก่าไม่เกิดซ้ำ
+  window.addEventListener("load",function(){
+    var dels=document.querySelectorAll("#bkAnnounceBar"); if(dels.length>1){for(var i=1;i<dels.length;i++)dels[i].remove();}
+  });
+})();
+</script>
+
 <div id="posterModal"
     class="fixed inset-0 z-[1200] hidden items-center justify-center bg-black/85 backdrop-blur-md p-3 sm:p-6 cursor-pointer"
     onclick="closePoster()" role="dialog" aria-modal="true" aria-label="โปสเตอร์สัมมนา">
